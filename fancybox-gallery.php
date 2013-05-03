@@ -6,19 +6,23 @@
     Version: 1.0 
 */  
 
-
+/**
+     * If the option to redirect attachments to their parent is checked, this performs the redirect.
+     *
+     * An extra check is done for when the attachment has no parent.
+     */
 // Custom Gallery Shortcode
 // http://wordpress.org/support/topic/edit-gallery-shortcode
 // Follow install instructions: http://fancyapps.com/fancybox/
 
     // enqueue css
-    wp_enqueue_style('wp_arch_lightbox_styles', plugins_url() . '/wp-architect-lightbox/source/jquery.fancybox.css', array(), '01', 'all');
+    wp_enqueue_style('wp_arch_lightbox_styles', plugins_url('/source/jquery.fancybox.css', __FILE__), array(), '01', 'all');
 
     // enqueue script | @Dependents: jQuery
-    wp_enqueue_script('wp_arch_lightbox_scripts', plugins_url() . '/wp-architect-lightbox/source/jquery.fancybox.pack.js', array('wp_arch_jquery'), "1", true);
+    wp_enqueue_script('wp_arch_lightbox_scripts', plugins_url('/source/jquery.fancybox.pack.js', __FILE__), array('wp_arch_jquery'), "1", true);
 
     // enqueue script | @Dependents: jQuery & wp_arch_lightbox_scripts
-    wp_enqueue_script('wp_arch_lightbox_scripts_init', plugins_url() . '/wp-architect-lightbox/source/init.js', array('wp_arch_lightbox_scripts'), "1", true);
+    wp_enqueue_script('wp_arch_lightbox_scripts_init', plugins_url('/source/init.js', __FILE__), array('wp_arch_lightbox_scripts'), "1", true);
 
     
     remove_shortcode('gallery', 'gallery_shortcode');
@@ -146,7 +150,7 @@
 
     $i = 0;
     foreach ( $attachments as $id => $attachment ) {
-        $link = isset($attr['link']) && 'file' == $attr['link'] ? wp_get_attachment_link($id, $size, false, false) : wp_get_attachment_link($id, $size, true, false);
+        $link = isset($attr['link']) && 'file' == $attr['link'] ? wp_get_attachment_link($id, $size, false, false) : wp_get_attachment_link($id, $size, false, false);
 
         $output .= "<{$itemtag} class='gallery-item'>";
         $output .= "
@@ -173,7 +177,6 @@
     return $output;
 
     }
-
 
 
  ?>
