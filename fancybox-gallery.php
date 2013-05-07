@@ -6,6 +6,19 @@
     Version: 1.0 
 */  
 
+// Redirect Image Attachment Urls 
+// Edited code from Plugin : Attachment Pages Redirect by Samuel Aguilera 
+// http://www.basicwp.com/stop-attachment-pages-indexing-wordpress/
+
+function wpss_attachment_redirect() {  
+        global $post;
+        if ( is_attachment() && isset($post->post_parent) && is_numeric($post->post_parent) && ($post->post_parent != 0) ) {
+            wp_redirect(get_permalink($post->post_parent), 301); // permanent redirect to post/page where image or document was uploaded
+            exit;  
+        }
+    }
+
+add_action('template_redirect', 'wpss_attachment_redirect',1);
 
 // Custom Gallery Shortcode
 // http://wordpress.org/support/topic/edit-gallery-shortcode
@@ -146,7 +159,7 @@
 
     $i = 0;
     foreach ( $attachments as $id => $attachment ) {
-        $link = isset($attr['link']) && 'file' == $attr['link'] ? wp_get_attachment_link($id, $size, false, false) : wp_get_attachment_link($id, $size, true, false);
+        $link = isset($attr['link']) && 'file' == $attr['link'] ? wp_get_attachment_link($id, $size, false, false) : wp_get_attachment_link($id, $size, false, false);
 
         $output .= "<{$itemtag} class='gallery-item'>";
         $output .= "
