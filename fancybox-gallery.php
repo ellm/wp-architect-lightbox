@@ -53,6 +53,24 @@ add_action('template_redirect', 'wpss_attachment_redirect', 1);
         // Add Custom shortcode
         add_shortcode('gallery', 'gallery_shortcode_wp_arch');
 
+        // Get the 'large' image
+        //http://oikos.org.uk/2011/09/tech-notes-using-resized-images-in-wordpress-galleries-and-lightboxes/
+
+        function oikos_get_attachment_link_filter( $content, $post_id, $size, $permalink ) {
+ 
+                // Only do this if we're getting the file URL
+                if (! $permalink) {
+                    // This returns an array of (url, width, height)
+                    $image = wp_get_attachment_image_src( $post_id, 'large' );
+                    $new_content = preg_replace('/href=\'(.*?)\'/', 'href=\'' . $image[0] . '\'', $content );
+                    return $new_content;
+                } else {
+                    return $content;
+                }
+            }
+            add_filter('wp_get_attachment_link', 'oikos_get_attachment_link_filter', 10, 4);
+
+
         // Adding Fancybox class to anchor link wrapping image 
         function add_rel_to_gallery($link) {
             $link = str_replace("'><img", "' class=\"fancybox\" rel=\"group1\" ><img", $link);
