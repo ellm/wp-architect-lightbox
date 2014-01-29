@@ -37,14 +37,17 @@ add_action('template_redirect', 'wpss_attachment_redirect', 1);
     // Create funtion to enqueue plugin scripts and styles
     function wpss_scripts_styles() {
 
-        // enqueue script | @Dependents: jQuery
-        wp_enqueue_script('wp_arch_lightbox_scripts', plugins_url('/source/jquery.fancybox.pack.js', __FILE__), array('wp_arch_jquery'), "1", true);
+        if ( !is_admin() ) {
 
-        // enqueue script | @Dependents: jQuery & wp_arch_lightbox_scripts
-        wp_enqueue_script('wp_arch_lightbox_scripts_init', plugins_url('/source/init.js', __FILE__), array('wp_arch_lightbox_scripts'), "1", true);
+            // enqueue script | @Dependents: jQuery
+            wp_enqueue_script('wp_arch_lightbox_scripts', plugins_url('/source/jquery.fancybox.pack.js', __FILE__), array('jquery'), "1", true);
 
-        // enqueue css
-        wp_enqueue_style('wp_arch_lightbox_styles', plugins_url('/source/jquery.fancybox.css', __FILE__), array(), '01', 'all');
+            // enqueue script | @Dependents: jQuery & wp_arch_lightbox_scripts
+            wp_enqueue_script('wp_arch_lightbox_scripts_init', plugins_url('/source/init.js', __FILE__), array('wp_arch_lightbox_scripts'), "1", true);
+
+            // enqueue css
+            wp_enqueue_style('wp_arch_lightbox_styles', plugins_url('/source/jquery.fancybox.css', __FILE__), array(), '01', 'all');
+        }
 
     }
         // Remove default Gallery Shortcode to replace with custom
